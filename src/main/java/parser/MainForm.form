@@ -78,7 +78,7 @@
         <properties>
           <model>
             <item value=".csv"/>
-            <item value=".xls"/>
+            <item value=".xlsx"/>
           </model>
         </properties>
       </component>

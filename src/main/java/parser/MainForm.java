@@ -1,6 +1,8 @@
 package parser;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -18,6 +20,7 @@ public class MainForm extends JFrame implements ActionListener {
 
     private static JFrame frame;
     private String pathToFile = "";
+    private String outputFormat = ".csv";
 
     public static void createAndShowGUI(){
         MainForm mainForm = new MainForm();
@@ -29,7 +32,7 @@ public class MainForm extends JFrame implements ActionListener {
         frame.setContentPane(mainForm.mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
-        frame.setSize(600, 200);
+        frame.setSize(650, 250);
         frame.setVisible(true);
 
         textArea.setEditable(false);
@@ -72,14 +75,27 @@ public class MainForm extends JFrame implements ActionListener {
 
         //click buttonParseFile event
         if(e.getSource() == buttonParseFile){
-            java.util.List<Scenario> scenarios = new ArrayList<>();
+            List<Scenario> scenarios = new ArrayList<>();
             try {
                 scenarios = HTMLReader.readFile(pathToFile);
+
+                final JFileChooser jFileChooser = new JFileChooser();
+
+                String formatComment = outputFormat.equals(".csv") ? "CSV File" : "Excel File";
+
+                FileFilter filter = new FileNameExtensionFilter(formatComment, outputFormat);
+                jFileChooser.setFileFilter(filter);
+
+                int returnVal = jFileChooser.showSaveDialog(MainForm.this);
+                if(returnVal == JFileChooser.APPROVE_OPTION) {
+                    pathToFile = jFileChooser.getSelectedFile().getAbsolutePath();
+                }
+
+                CSVWriter.writeCsvFile(pathToFile + outputFormat, scenarios);
             }
             catch(IOException ex){
                 consoleMessage("Error while parsing the file!");
             }
-            CSVWriter.writeCsvFile("4.csv", scenarios);
         }
 
         //set radio button event
@@ -99,7 +115,8 @@ public class MainForm extends JFrame implements ActionListener {
 
         //set dropdown box event
         if(e.getSource() == comboBoxOutputFormat){
-            consoleMessage(comboBoxOutputFormat.getSelectedItem().toString() + " item was added");
+            outputFormat = comboBoxOutputFormat.getSelectedItem().toString();
+            consoleMessage(outputFormat + " item was added");
         }
     }
 
