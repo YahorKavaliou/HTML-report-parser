@@ -94,6 +94,11 @@ public class MainForm extends JFrame implements ActionListener {
                 consoleMessage("Failed Scenarios radio button was set");
             }
         }
+
+        //set dropdown box event
+        if(e.getSource() == comboBoxOutputFormat){
+
+        }
     }
 
     private void consoleMessage(String message){
