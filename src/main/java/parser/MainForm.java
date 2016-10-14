@@ -30,7 +30,6 @@ public class MainForm extends JFrame implements ActionListener {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setSize(600, 200);
-        //frame.pack();
         frame.setVisible(true);
 
         textArea.setEditable(false);
@@ -44,9 +43,12 @@ public class MainForm extends JFrame implements ActionListener {
         group.add(radioButtonSuccessScenarios);
         group.add(radioButtonFailedScenarios);
 
+        radioButtonAllScenarios.setSelected(true);
         radioButtonAllScenarios.addActionListener(this);
         radioButtonSuccessScenarios.addActionListener(this);
         radioButtonFailedScenarios.addActionListener(this);
+
+        comboBoxOutputFormat.addActionListener(this);
     }
 
     @Override
@@ -97,7 +99,7 @@ public class MainForm extends JFrame implements ActionListener {
 
         //set dropdown box event
         if(e.getSource() == comboBoxOutputFormat){
-
+            consoleMessage(comboBoxOutputFormat.getSelectedItem().toString() + " item was added");
         }
     }
 
